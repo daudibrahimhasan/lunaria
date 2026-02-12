@@ -27,6 +27,24 @@ import {
   getPricingStructure,
 } from "./utils/geoDetection";
 
+// ScrollToTop Component
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  return null;
+};
+
 // Lunaria Logo Component
 const LunariaLogo = ({
   className = "",
@@ -270,6 +288,8 @@ const HeroSection = ({
                   src="/1770850570579-019c4eea-8314-75a9-917f-82dcdf898b1d.png"
                   alt="Lunaria 7-in-1 Capsule Routine"
                   className="w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
                 />
               </div>
 
@@ -1041,6 +1061,7 @@ export function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="min-h-screen bg-[#FAF9F7]">
         <SEO 
           title="Lunaria | 12-in-1 Capsule Routine for Radiant Skin"
