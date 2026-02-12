@@ -208,10 +208,14 @@ export const BangladeshPricingSection = () => {
             {userLocation.isBangladesh && (
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Shield className="w-4 h-4" />
-                  <span>Secure Payment Options</span>
+                  <Shield className="w-4 h-4 text-[#5A8A6E]" />
+                  <span>30-Day Money-Back Guarantee</span>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <Check className="w-4 h-4 text-[#5A8A6E]" />
+                  <span>Clinically Tested & Safe</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-2">
                   {pricing.paymentMethods.map((method) => (
                     <div 
                       key={method.id}
@@ -239,7 +243,7 @@ export const BangladeshPricingSection = () => {
                     <Phone className="w-4 h-4" />
                     <span>+880 1787-853308</span>
                   </a>
-                  <a href="https://wa.me/8801787853308" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-[#5A8A6E] transition-colors">
+                  <a href="https://wa.me/8801787853308" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-[#5A8A6E] font-bold hover:opacity-80 transition-opacity">
                     <MessageCircle className="w-4 h-4" />
                     <span>WhatsApp Support</span>
                   </a>

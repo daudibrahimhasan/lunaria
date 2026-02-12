@@ -13,8 +13,14 @@ import {
   Check,
   Sun,
   Moon,
+  ChevronDown,
+  MessageCircle,
+  Phone,
 } from "lucide-react";
 import { BangladeshPricingSection } from "./components/BangladeshPricingSection";
+import { SEO } from "./components/SEO";
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
+import { ReviewPage } from "./pages/ReviewPage";
 import {
   detectUserLocation,
   formatPrice,
@@ -78,12 +84,29 @@ const SeedPodDecoration = ({ className = "" }: { className?: string }) => (
 const Navigation = ({ cartCount }: { cartCount: number }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <nav
@@ -93,19 +116,25 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <LunariaLogo />
+          <Link to="/">
+            <LunariaLogo />
+          </Link>
 
           <div className="hidden md:flex items-center gap-8">
             {["Ritual", "Ingredients", "How It Works", "Sustainability"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="text-sm font-medium text-gray-700 hover:text-[#9B7BB5] transition-colors"
-                >
-                  {item}
-                </a>
-              ),
+              (item) => {
+                const id = item.toLowerCase().replace(/\s+/g, "-");
+                return (
+                  <a
+                    key={item}
+                    href={`#${id}`}
+                    onClick={(e) => handleNavClick(e, id)}
+                    className="text-sm font-medium text-gray-700 hover:text-[#9B7BB5] transition-colors"
+                  >
+                    {item}
+                  </a>
+                );
+              }
             )}
           </div>
 
@@ -137,16 +166,19 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
         <div className="md:hidden bg-white border-t">
           <div className="px-4 py-4 space-y-3">
             {["Ritual", "Ingredients", "How It Works", "Sustainability"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="block text-sm font-medium text-gray-700 py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ),
+              (item) => {
+                 const id = item.toLowerCase().replace(/\s+/g, "-");
+                 return (
+                  <a
+                    key={item}
+                    href={`#${id}`}
+                    className="block text-sm font-medium text-gray-700 py-2"
+                    onClick={(e) => handleNavClick(e, id)}
+                  >
+                    {item}
+                  </a>
+                );
+              }
             )}
           </div>
         </div>
@@ -177,20 +209,17 @@ const HeroSection = ({
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 rounded-full border border-[#9B7BB5]/20">
               <Sparkles className="w-4 h-4 text-[#9B7BB5]" />
               <span className="text-sm font-medium text-[#9B7BB5]">
-                7 Steps. One Pack. Pure Radiance.
+                Premium care. Light as air.
               </span>
             </div>
 
             <h1 className="font-display text-5xl lg:text-7xl font-light text-gray-900 leading-tight">
-              Glow with <br />
-              <span className="italic text-[#9B7BB5]">Honesty</span> & <br />
-              <span className="italic text-[#9B7BB5]">Radiance</span>
+              Pack Light. <br />
+              <span className="italic text-[#9B7BB5]">Glow Bright.</span>
             </h1>
 
             <p className="text-lg text-gray-600 max-w-md leading-relaxed">
-              Discover the pure essence of effortless skincare. Our 7-in-1
-              Capsule Routine delivers a complete daily regimen in pre-dosed,
-              single-use capsules.
+              The complete 12-step skincare routine—cleanser, toner, essence, serum, eye care, and moisturizer—in one featherlight capsule pack.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -326,7 +355,7 @@ const RitualSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">
-            The Ritual
+            Why Lunaria?
           </span>
           <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
             Your Complete <span className="italic text-[#9B7BB5]">6-Step</span>{" "}
@@ -374,12 +403,10 @@ const RitualSection = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="font-display text-3xl text-gray-900 mb-4">
-                Precision in Every Capsule
+                Big glow energy. <span className="italic text-[#9B7BB5]">Tiny to carry.</span>
               </h3>
               <p className="text-gray-600 mb-6">
-                Each capsule contains the perfect single-use dose, ensuring
-                freshness and potency. No waste, no guesswork—just pure skincare
-                perfection.
+                We replaced 300g of bulky bottles with a 15g leak-proof capsule pack. It fits in your wallet, slides into your carry-on, and delivers the full hydration your skin craves.
               </p>
               <ul className="space-y-3">
                 {[
@@ -472,10 +499,10 @@ const ResultsSection = () => {
               "I never believed a capsule could change my skin so drastically. The uneven tone is gone, and my face feels plumper and more alive than it has in years."
             </p>
             
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-[#FAF9F7] rounded-full flex items-center justify-center font-display text-xl text-[#9B7BB5]">A</div>
               <div>
-                <p className="font-medium text-gray-900">Anika Rahman</p>
+                <p className="font-medium text-gray-900">Emily R.</p>
                 <div className="flex items-center gap-1">
                   {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 fill-[#9B7BB5] text-[#9B7BB5]" />)}
                   <span className="text-xs text-gray-500 ml-1">Verified Buyer</span>
@@ -483,9 +510,24 @@ const ResultsSection = () => {
               </div>
             </div>
 
-            <button className="text-[#9B7BB5] border-b border-[#9B7BB5] pb-1 hover:text-[#8A6AA4] hover:border-[#8A6AA4] transition-colors">
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed italic">
+              "Best travel companion ever. I took the 5-pack to Miami and didn't have to worry about my skincare routine at all. My skin stayed hydrated and glowing!"
+            </p>
+            
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 bg-[#FAF9F7] rounded-full flex items-center justify-center font-display text-xl text-[#9B7BB5]">S</div>
+              <div>
+                <p className="font-medium text-gray-900">Sarah K.</p>
+                <div className="flex items-center gap-1">
+                  {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 fill-[#9B7BB5] text-[#9B7BB5]" />)}
+                  <span className="text-xs text-gray-500 ml-1">Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+
+            <Link to="/reviews" className="text-[#9B7BB5] border-b border-[#9B7BB5] pb-1 hover:text-[#8A6AA4] hover:border-[#8A6AA4] transition-colors">
               Read 2,000+ Reviews
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -493,8 +535,9 @@ const ResultsSection = () => {
   );
 };
 
-// Ingredients Section
 const IngredientsSection = () => {
+  const [expandedIngredient, setExpandedIngredient] = useState<string | null>(null);
+
   const ingredients = [
     {
       name: "Squalene",
@@ -542,49 +585,115 @@ const IngredientsSection = () => {
     "Lotus",
   ];
 
+  const ingredientColors = {
+    "Squalene": { bg: "bg-purple-100", border: "border-purple-200", text: "text-purple-800", hover: "hover:bg-purple-200" },
+    "Peptides": { bg: "bg-pink-100", border: "border-pink-200", text: "text-pink-800", hover: "hover:bg-pink-200" },
+    "Vitamin E": { bg: "bg-amber-100", border: "border-amber-200", text: "text-amber-800", hover: "hover:bg-amber-200" },
+    "Collagen": { bg: "bg-emerald-100", border: "border-emerald-200", text: "text-emerald-800", hover: "hover:bg-emerald-200" },
+    "Arbutin": { bg: "bg-blue-100", border: "border-blue-200", text: "text-blue-800", hover: "hover:bg-blue-200" },
+    "Hyaluronic Acid": { bg: "bg-indigo-100", border: "border-indigo-200", text: "text-indigo-800", hover: "hover:bg-indigo-200" },
+    "Niacinamide": { bg: "bg-violet-100", border: "border-violet-200", text: "text-violet-800", hover: "hover:bg-violet-200" },
+  };
+
   return (
-    <section id="ingredients" className="py-24 bg-[#FAF9F7] relative">
-      <SeedPodDecoration className="absolute top-20 right-0 w-64 rotate-180" />
+    <section id="ingredients" className="py-24 lg:py-32 bg-[#FAF9F7] relative overflow-hidden">
+      <SeedPodDecoration className="absolute top-20 right-0 w-80 rotate-180 opacity-50" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 mb-16 items-center">
-            <div className="order-2 lg:order-1">
-                <span className="text-[#5A8A6E] font-medium text-sm tracking-widest uppercase">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Top Section - Botanicals */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 mb-24 items-center">
+            <div className="lg:col-span-5 order-2 lg:order-1">
+                <span className="text-[#5A8A6E] font-semibold text-xs tracking-[0.2em] uppercase pl-1 block mb-6">
                     Pure Botanicals
                 </span>
-                <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4 mb-6">
-                    Nature's Most <span className="italic text-[#9B7BB5]">Powerful</span> Actives
+                <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mb-8 leading-tight">
+                    Nature's Most <span className="font-normal italic text-[#9B7BB5]">Powerful</span> Actives
                 </h2>
-                <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                <p className="text-gray-500 text-base leading-relaxed mb-10 max-w-lg">
                     We've curated the finest ingredients from around the world. Each capsule is a potent blend of science and nature, designed to deliver visible results without irritation.
                 </p>
-                <div className="flex flex-wrap gap-3">
+                
+                {/* Botanical Tags - Lighter/Smaller */}
+                <div className="flex flex-wrap gap-2.5 mb-16">
                     {botanicals.map((botanical) => (
                         <span
                         key={botanical}
-                        className="px-4 py-2 bg-white rounded-full text-sm text-gray-600 border border-[#D4C8E8]/30 shadow-sm"
+                        className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-400 border border-gray-100 shadow-sm"
                         >
                         {botanical}
                         </span>
                     ))}
                 </div>
+
+                {/* Active Ingredients - Pill Style with Click to Expand */}
+                <div className="space-y-4">
+                  <div className="flex flex-wrap gap-3">
+                    {ingredients.map((ing) => {
+                      const colors = ingredientColors[ing.name as keyof typeof ingredientColors];
+                      const isExpanded = expandedIngredient === ing.name;
+                      
+                      return (
+                        <div key={ing.name} className="contents">
+                          <button
+                            onClick={() => setExpandedIngredient(isExpanded ? null : ing.name)}
+                            className={`px-5 py-2.5 ${colors.bg} ${colors.border} border rounded-full text-sm ${colors.text} ${colors.hover} transition-all shadow-sm hover:shadow-md font-medium flex items-center gap-2`}
+                          >
+                            {ing.name}
+                            <ChevronDown className={`w-3.5 h-3.5 opacity-60 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Expanded Details */}
+                  {expandedIngredient && (
+                    <div className="mt-6 p-6 bg-white rounded-2xl border-2 border-[#D4C8E8]/20 shadow-lg animate-fade-in-up">
+                      {ingredients.find(ing => ing.name === expandedIngredient) && (
+                        <>
+                          <div className="flex items-center gap-4 mb-3">
+                            <div className={`w-10 h-10 rounded-full ${ingredientColors[expandedIngredient as keyof typeof ingredientColors].bg} flex items-center justify-center`}>
+                              <Sparkles className={`w-5 h-5 ${ingredientColors[expandedIngredient as keyof typeof ingredientColors].text}`} />
+                            </div>
+                            <div>
+                              <h4 className={`font-display text-xl ${ingredientColors[expandedIngredient as keyof typeof ingredientColors].text}`}>
+                                {expandedIngredient}
+                              </h4>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 text-sm leading-relaxed mb-3">
+                            {ingredients.find(ing => ing.name === expandedIngredient)?.desc}
+                          </p>
+                           <span className={`text-[10px] font-bold uppercase tracking-wider ${ingredientColors[expandedIngredient as keyof typeof ingredientColors].text} bg-white border border-current px-2 py-1 rounded-full inline-block opacity-80`}>
+                                {ingredients.find(ing => ing.name === expandedIngredient)?.benefit}
+                           </span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
             </div>
             
-            <div className="order-1 lg:order-2 relative">
-                 <div className="absolute inset-0 bg-[#5A8A6E]/5 rounded-full blur-3xl" />
-                  <div className="relative aspect-square rounded-3xl border border-[#D4C8E8]/30 bg-white shadow-2xl shadow-[#5A8A6E]/10 overflow-hidden flex items-center justify-center">
+            <div className="lg:col-span-7 order-1 lg:order-2 relative">
+                  {/* Background Glow */}
+                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-[#5A8A6E]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                 
+                  <div className="relative aspect-square rounded-[2.5rem] border border-white/50 bg-white shadow-2xl shadow-[#5A8A6E]/5 overflow-hidden flex items-center justify-center group">
+                    {/* Image Vignette Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10 pointer-events-none" />
+                    
                     {/* Ingredients Composition */}
-                    <div className="w-full h-full relative">
+                    <div className="w-full h-full relative z-0">
                         <img 
                             src="/1770848721745-019c4ece-8f2c-7c98-9f1f-5d05d9213760.png" 
                             alt="Natural Ingredients" 
-                            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                          {/* Floating Ingredient Badges */}
-                        <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-lg border border-[#D4C8E8]/20 animate-float">
+                        <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-white/50 animate-float z-20">
                             <Sparkles className="w-5 h-5 text-[#9B7BB5]" />
                         </div>
-                        <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-lg border border-[#5A8A6E]/20 animate-float" style={{animationDelay: '1s'}}>
+                        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-white/50 animate-float z-20" style={{animationDelay: '1.5s'}}>
                             <Leaf className="w-5 h-5 text-[#5A8A6E]" />
                         </div>
                     </div>
@@ -592,22 +701,38 @@ const IngredientsSection = () => {
             </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ingredients.map((ing) => (
-            <div
-              key={ing.name}
-              className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow border border-[#D4C8E8]/20"
-            >
-              <div className="w-10 h-10 rounded-full bg-[#D4C8E8]/30 flex items-center justify-center mb-4">
-                <Sparkles className="w-5 h-5 text-[#9B7BB5]" />
+        {/* Feature Showcase Section */}
+        <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-lg border border-[#D4C8E8]/20">
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Left Side - Product Image */}
+            <div className="flex items-center justify-center">
+              <div className="relative max-w-md">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#D4C8E8]/30 to-[#9B7BB5]/30 rounded-3xl blur-2xl" />
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#D4C8E8]/30">
+                  <img 
+                    src="/b_make_it_super_realis.jpeg"
+                    alt="Lunaria Capsule Products"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
               </div>
-              <h3 className="font-medium text-gray-900 mb-1">{ing.name}</h3>
-              <span className="text-xs font-medium text-[#5A8A6E] bg-[#5A8A6E]/10 px-2 py-1 rounded-full">
-                {ing.benefit}
-              </span>
-              <p className="text-sm text-gray-500 mt-3">{ing.desc}</p>
             </div>
-          ))}
+
+            {/* Right Side - Brand Story */}
+            <div className="flex flex-col justify-center">
+              <div className="border-l-4 border-[#9B7BB5] pl-6">
+                <h3 className="font-display text-3xl text-gray-900 mb-4">
+                  Science Meets <span className="italic text-[#9B7BB5]">Nature</span>
+                </h3>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Every Lunaria capsule is formulated in FDA-registered facilities using only the highest-grade ingredients. We combine cutting-edge Korean skincare science with time-tested botanical wisdom to deliver visible results you can trust.
+                </p>
+                <p className="text-gray-600 leading-relaxed">
+                  Our unique capsule format isn't just convenient—it preserves the potency of active ingredients by protecting them from air and light until the moment you apply them. Fresh, effective, and perfectly dosed every single time.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -621,11 +746,14 @@ const HowItWorksSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">
-            Simple Ritual
+            How to Use
           </span>
           <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
-            How to <span className="italic text-[#9B7BB5]">Apply</span>
+            Get the glow. <span className="italic text-[#9B7BB5]">Good to go.</span>
           </h2>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">
+            ☀️ AM: Snap, apply, and protect. 🌙 PM: Cleanse, hydrate, and restore.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -871,6 +999,22 @@ const Footer = () => {
   );
 };
 
+const LandingPage = ({ cartCount, handleAddToCart, heroPrice, currency }: any) => (
+  <>
+    <HeroSection 
+      onAddToCart={handleAddToCart} 
+      price={heroPrice} 
+      currency={currency} 
+    />
+    <RitualSection />
+    <ResultsSection />
+    <IngredientsSection />
+    <HowItWorksSection />
+    <SustainabilitySection />
+    <BangladeshPricingSection />
+  </>
+);
+
 // Main App Component
 export function App() {
   const [cartCount, setCartCount] = useState(0);
@@ -896,32 +1040,39 @@ export function App() {
   const currency = pricing.currency;
 
   return (
-    <div className="min-h-screen bg-[#FAF9F7]">
-      <Navigation cartCount={cartCount} />
-
-      {/* Cart Notification */}
-      {showNotification && (
-        <div className="fixed bottom-8 right-8 z-50 bg-[#5A8A6E] text-white px-6 py-4 rounded-2xl shadow-lg animate-fade-in-up flex items-center gap-3">
-          <Check className="w-5 h-5" />
-          <span>Added to your ritual</span>
-        </div>
-      )}
-
-      <main>
-        <HeroSection 
-          onAddToCart={handleAddToCart} 
-          price={heroPrice} 
-          currency={currency} 
+    <BrowserRouter>
+      <div className="min-h-screen bg-[#FAF9F7]">
+        <SEO 
+          title="Lunaria | 12-in-1 Capsule Routine for Radiant Skin"
+          description="Discover the 6-step AM/PM ritual with Lunaria's 12-in-1 capsules. Simplify your skincare with pre-dosed, sustainable beauty for Bangladesh and beyond."
+          image="/Gemini_Generated_Image_clo5tmclo5tmclo5.png"
         />
-        <RitualSection />
-        <ResultsSection />
-        <IngredientsSection />
-        <HowItWorksSection />
-        <SustainabilitySection />
-        <BangladeshPricingSection />
-      </main>
+        <Navigation cartCount={cartCount} />
 
-      <Footer />
-    </div>
+        {/* Cart Notification */}
+        {showNotification && (
+          <div className="fixed bottom-8 right-8 z-50 bg-[#5A8A6E] text-white px-6 py-4 rounded-2xl shadow-lg animate-fade-in-up flex items-center gap-3">
+            <Check className="w-5 h-5" />
+            <span>Added to your ritual</span>
+          </div>
+        )}
+
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <LandingPage 
+                cartCount={cartCount} 
+                handleAddToCart={handleAddToCart} 
+                heroPrice={heroPrice} 
+                currency={currency} 
+              />
+            } />
+            <Route path="/reviews" element={<ReviewPage />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
