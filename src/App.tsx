@@ -545,8 +545,20 @@ const ResultsSection = () => {
               </div>
             </div>
 
-            <Link to="/reviews" className="text-[#9B7BB5] border-b border-[#9B7BB5] pb-1 hover:text-[#8A6AA4] hover:border-[#8A6AA4] transition-colors">
-              Read 2,000+ Reviews
+            <Link 
+              to="/reviews" 
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#9B7BB5] to-[#B794D0] text-white rounded-full font-medium text-base shadow-lg shadow-[#9B7BB5]/30 hover:shadow-xl hover:shadow-[#9B7BB5]/40 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+            >
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              
+              <div className="relative flex items-center gap-3">
+                <Star className="w-5 h-5 fill-white/80" />
+                <span>Read 2,000+ Reviews</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </Link>
           </div>
         </div>
@@ -1003,7 +1015,8 @@ const Footer = () => {
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500">
-            © 2025 Lunaria. All rights reserved.
+            © 2026 Lunaria. All rights reserved. Powered by{" "}
+            <span className="text-[#9B7BB5] font-medium">Nexasity AI</span>
           </p>
           <div className="flex gap-6 text-sm text-gray-500">
             <a href="#" className="hover:text-white transition-colors">

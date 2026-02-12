@@ -12,7 +12,7 @@ const reviews = [
     date: "2 days ago",
     title: "Transformation You Can See",
     content: "I never believed a capsule could change my skin so drastically. The uneven tone is gone, and my face feels plumper and more alive than it has in years.",
-    image: "/review/before_after.jpeg",
+    image: "/review/2.jpeg",
     helpful: 124
   },
   {
@@ -23,7 +23,7 @@ const reviews = [
     date: "1 week ago",
     title: "Perfect for travel!",
     content: "Took these on my trip to Tulum. No spills, perfect dose every time. My skin stayed glowing despite the sun and sand.",
-    image: "/review/model_holding_blister.png",
+    image: "/review/3.png",
     helpful: 89
   },
   {
@@ -34,7 +34,7 @@ const reviews = [
     date: "2 weeks ago",
     title: "Finally a routine I can stick to",
     content: "The 6 steps morning and night are so easy to follow. My skin texture has improved so much in just 12 days.",
-    image: "/review/hf_20260129_084428_b8e67cb8-33ad-470e-a2c3-510065017c84.png",
+    image: "/review/4.png",
     helpful: 56
   },
   {
@@ -45,7 +45,7 @@ const reviews = [
     date: "3 weeks ago",
     title: "Good results, fast delivery",
     content: "Delivery to New York was super fast (2 days). The product itself is very premium. Love the glass skin effect.",
-    image: "/review/Ogf1FTiQk.jpeg", 
+    image: "/review/5.jpeg", 
     helpful: 34
   },
   {
@@ -56,7 +56,7 @@ const reviews = [
     date: "1 month ago",
     title: "Worth every penny",
     content: "This is cheaper than buying serum, moisturizer, and toner separately. Plus the quality is top notch Korean standard.",
-    image: "/review/BcAJMotSO.jpeg",
+    image: "/review/6.jpeg",
     helpful: 42
   }
 ];
@@ -80,6 +80,25 @@ export const ReviewPage = () => {
             <span className="font-tan-grandeur mr-1">Lunaria</span> Reviews
           </span>
           <div className="w-20" /> {/* Spacer for centering */}
+        </div>
+      </div>
+
+      {/* Hero Video Banner */}
+      <div className="relative w-full overflow-hidden" style={{ maxHeight: '420px' }}>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ maxHeight: '420px' }}
+        >
+          <source src="/review/1.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F7] via-transparent to-black/20" />
+        <div className="absolute bottom-8 left-0 right-0 text-center">
+          <p className="text-white text-lg font-medium tracking-wide drop-shadow-lg">Real People. Real Results.</p>
         </div>
       </div>
 
