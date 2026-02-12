@@ -139,7 +139,7 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            {["Ritual", "Ingredients", "How It Works", "Sustainability"].map(
+            {["Ritual", "Ingredients", "How to Use", "Sustainability"].map(
               (item) => {
                 const id = item.toLowerCase().replace(/\s+/g, "-");
                 return (
@@ -183,7 +183,7 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <div className="px-4 py-4 space-y-3">
-            {["Ritual", "Ingredients", "How It Works", "Sustainability"].map(
+            {["Ritual", "Ingredients", "How to Use", "Sustainability"].map(
               (item) => {
                  const id = item.toLowerCase().replace(/\s+/g, "-");
                  return (
@@ -742,13 +742,13 @@ const IngredientsSection = () => {
             <div className="flex flex-col justify-center">
               <div className="border-l-4 border-[#9B7BB5] pl-6">
                 <h3 className="font-display text-3xl text-gray-900 mb-4">
-                  Science Meets <span className="italic text-[#9B7BB5]">Nature</span>
+                  Luxury Without the <span className="italic text-[#9B7BB5]">Baggage</span>
                 </h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Every Lunaria capsule is formulated in FDA-registered facilities using only the highest-grade ingredients. We combine cutting-edge Korean skincare science with time-tested botanical wisdom to deliver visible results you can trust.
+                  Why compromise on your skincare routine when you travel? Lunaria replaces your heavy, fragile luxury bottles with a smart, space-saving solution that fits perfectly in any bag.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  Our unique capsule format isn't just convenient—it preserves the potency of active ingredients by protecting them from air and light until the moment you apply them. Fresh, effective, and perfectly dosed every single time.
+                  Experience the same potent, high-performance actives found in top-tier brands—Squalene, Peptides, and Hyaluronic Acid—compacted into spill-proof, biodegradable capsules. Perfect for your gym bag, carry-on, or clutch.
                 </p>
               </div>
             </div>
@@ -762,7 +762,7 @@ const IngredientsSection = () => {
 // How It Works Section
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-24 bg-white">
+    <section id="how-to-use" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">
@@ -945,7 +945,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#how-to-use" className="hover:text-white transition-colors">
                   How to Use
                 </a>
               </li>
