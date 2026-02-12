@@ -15,6 +15,11 @@ import {
   Moon,
 } from "lucide-react";
 import { BangladeshPricingSection } from "./components/BangladeshPricingSection";
+import {
+  detectUserLocation,
+  formatPrice,
+  getPricingStructure,
+} from "./utils/geoDetection";
 
 // Lunaria Logo Component
 const LunariaLogo = ({
@@ -151,7 +156,15 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
 };
 
 // Hero Section
-const HeroSection = ({ onAddToCart }: { onAddToCart: () => void }) => {
+const HeroSection = ({ 
+  onAddToCart, 
+  price, 
+  currency 
+}: { 
+  onAddToCart: () => void;
+  price: number;
+  currency: string;
+}) => {
   return (
     <section className="relative min-h-screen bg-lunaria-hero pt-20 overflow-hidden">
       {/* Background Decorations */}
@@ -186,7 +199,7 @@ const HeroSection = ({ onAddToCart }: { onAddToCart: () => void }) => {
                 className="px-8 py-4 bg-[#9B7BB5] text-white rounded-full font-medium hover:bg-[#8A6AA4] transition-all hover:shadow-lg hover:shadow-[#9B7BB5]/30 flex items-center gap-2"
               >
                 <ShoppingBag className="w-5 h-5" />
-                Add to Ritual — $48
+                Add to Ritual — {formatPrice(price, currency)}
               </button>
               <button className="px-8 py-4 border-2 border-[#9B7BB5] text-[#9B7BB5] rounded-full font-medium hover:bg-[#9B7BB5]/5 transition-all">
                 Discover More
@@ -264,52 +277,45 @@ const RitualSection = () => {
   const steps = [
     {
       num: 1,
-      name: "Oil Cleanser",
-      icon: Droplets,
-      desc: "Gently remove impurities & makeup",
-      time: "PM",
-    },
-    {
-      num: 2,
       name: "Cleanser",
-      icon: Sparkles,
+      icon: Droplets,
       desc: "Purify without stripping",
       time: "AM/PM",
     },
     {
-      num: 3,
+      num: 2,
       name: "Toner",
       icon: Droplets,
       desc: "Balance & prepare skin",
       time: "AM/PM",
     },
     {
+      num: 3,
+      name: "Essence",
+      icon: Sparkles,
+      desc: "Hydrate and revitalize",
+      time: "AM/PM",
+    },
+    {
       num: 4,
       name: "Serum",
       icon: Sparkles,
-      desc: "Deliver potent actives deep within",
+      desc: "Deliver potent actives",
       time: "AM/PM",
     },
     {
       num: 5,
-      name: "Eye Cream",
+      name: "Eye Care",
       icon: Heart,
-      desc: "Target dark circles & fine lines",
+      desc: "Target delicate areas",
       time: "AM/PM",
     },
     {
       num: 6,
-      name: "Face Cream",
+      name: "Moisturizer",
       icon: Shield,
-      desc: "Lock in moisture & firm",
+      desc: "Lock in hydration",
       time: "AM/PM",
-    },
-    {
-      num: 7,
-      name: "Primer",
-      icon: Sparkles,
-      desc: "Smooth & protect for radiant finish",
-      time: "AM",
     },
   ];
 
@@ -323,16 +329,16 @@ const RitualSection = () => {
             The Ritual
           </span>
           <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
-            Your Complete <span className="italic text-[#9B7BB5]">7-Step</span>{" "}
-            Journey
+            Your Complete <span className="italic text-[#9B7BB5]">6-Step</span>{" "}
+            AM/PM Ritual
           </h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Each blister pack contains 7 precisely dosed capsules for a full day
-            & night routine
+            Each day involves 12 capsules total — 6 in the morning and 6 at night
+            for total skin transformation.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-7 gap-4">
+        <div className="grid md:grid-cols-6 gap-4">
           {steps.map((step) => (
             <div
               key={step.num}
@@ -627,7 +633,7 @@ const HowItWorksSection = () => {
             {
               step: "01",
               title: "Twist Open",
-              desc: "Twist or pierce open one capsule per step, following the numbered order on the blister pack.",
+              desc: "Twist or pierce open each capsule. Use 6 capsules in the morning and 6 at night as numbered.",
             },
             {
               step: "02",
@@ -831,8 +837,8 @@ const Footer = () => {
 
           <div>
             <h4 className="font-medium mb-4">Connect</h4>
-            <p className="text-sm text-gray-400 mb-2">+880 1787 853 308</p>
-            <p className="text-sm text-gray-400 mb-4">hello@lunaria.com</p>
+            <a href="tel:+8801787853308" className="block text-sm text-gray-400 mb-2 hover:text-[#9B7BB5] transition-colors">+880 1787 853 308</a>
+            <a href="mailto:hello@lunaria.com" className="block text-sm text-gray-400 mb-4 hover:text-[#9B7BB5] transition-colors">hello@lunaria.com</a>
             <div className="flex gap-4">
               {["Instagram", "Facebook", "Pinterest"].map((social) => (
                 <a
@@ -869,12 +875,25 @@ const Footer = () => {
 export function App() {
   const [cartCount, setCartCount] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
+  const [isBangladesh, setIsBangladesh] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const initLocation = async () => {
+      const location = await detectUserLocation();
+      setIsBangladesh(location.isBangladesh);
+    };
+    initLocation();
+  }, []);
 
   const handleAddToCart = () => {
     setCartCount(cartCount + 1);
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 3000);
   };
+
+  const pricing = getPricingStructure(isBangladesh ?? false);
+  const heroPrice = pricing.packs[0].price;
+  const currency = pricing.currency;
 
   return (
     <div className="min-h-screen bg-[#FAF9F7]">
@@ -889,7 +908,11 @@ export function App() {
       )}
 
       <main>
-        <HeroSection onAddToCart={handleAddToCart} />
+        <HeroSection 
+          onAddToCart={handleAddToCart} 
+          price={heroPrice} 
+          currency={currency} 
+        />
         <RitualSection />
         <ResultsSection />
         <IngredientsSection />

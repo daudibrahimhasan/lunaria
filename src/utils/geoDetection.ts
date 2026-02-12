@@ -85,7 +85,7 @@ export const getPricingStructure = (isBangladesh: boolean) => {
       ],
       delivery: {
         cost: 0,
-        time: '2-4 business days',
+        time: '2-3 business days',
         freeDelivery: true
       },
       paymentMethods: [

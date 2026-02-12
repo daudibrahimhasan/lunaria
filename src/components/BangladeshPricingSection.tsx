@@ -96,9 +96,9 @@ export const BangladeshPricingSection = () => {
                       ? "/1770855058050-019c4f2f-068a-7154-8afb-c0d41c18ab88.jpeg" 
                       : selectedPack === 5
                       ? "/gemini-3-pro-image-preview-2k_b_make_the_product_5_p.png"
-                      : "/Gemini_Generated_Image_clo5tmclo5tmclo5.png"
+                      : "/1770858130819-019c4f5e-7ab2-7c9c-af94-4940f9cd6896.png"
                   } 
-                  alt="Lunaria 7-in-1 Capsule Routine" 
+                  alt="Lunaria 12-in-1 Capsule Routine" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -127,7 +127,7 @@ export const BangladeshPricingSection = () => {
               Complete Routine
             </span>
             <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4 mb-4">
-              Lunaria 7-in-1<br />Capsule Routine
+              Lunaria 12-in-1<br />Capsule Routine
             </h2>
             
             {/* Price Display */}
@@ -148,15 +148,15 @@ export const BangladeshPricingSection = () => {
             </div>
 
             <p className="text-gray-600 mb-8">
-              {selectedPack} pack{selectedPack > 1 ? 's' : ''} containing {selectedPack * 7} single-use capsules—
-              your complete skincare ritual for {selectedPack} week{selectedPack > 1 ? 's' : ''}.
+              {selectedPack} pack{selectedPack > 1 ? 's' : ''} containing {selectedPack * 12} single-use capsules—
+              your complete skincare ritual for {selectedPack} day{selectedPack > 1 ? 's' : ''}.
             </p>
 
             {/* Features */}
             <div className="space-y-4 mb-8">
               <div className="flex items-center gap-3 text-gray-700">
                 <Check className="w-5 h-5 text-[#5A8A6E]" />
-                <span>{selectedPack * 7} precisely dosed capsules</span>
+                <span>{selectedPack * 12} precisely dosed capsules</span>
               </div>
               <div className="flex items-center gap-3 text-gray-700">
                 <Check className="w-5 h-5 text-[#5A8A6E]" />
@@ -234,15 +234,15 @@ export const BangladeshPricingSection = () => {
             {/* Support Info for Bangladesh */}
             {userLocation.isBangladesh && (
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex items-center justify-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
+                  <a href="tel:+8801787853308" className="flex items-center gap-1 hover:text-[#9B7BB5] transition-colors">
                     <Phone className="w-4 h-4" />
                     <span>+880 1787-853308</span>
-                  </div>
-                  <div className="flex items-center gap-1">
+                  </a>
+                  <a href="https://wa.me/8801787853308" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-[#5A8A6E] transition-colors">
                     <MessageCircle className="w-4 h-4" />
                     <span>WhatsApp Support</span>
-                  </div>
+                  </a>
                 </div>
               </div>
             )}
