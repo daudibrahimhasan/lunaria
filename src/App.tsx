@@ -223,7 +223,6 @@ const HeroSection = ({
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 rounded-full border border-[#9B7BB5]/20">
-              <Sparkles className="w-4 h-4 text-[#9B7BB5]" />
               <span className="text-sm font-medium text-[#9B7BB5]">
                 Premium care. Light as air.
               </span>
@@ -253,12 +252,21 @@ const HeroSection = ({
 
             <div className="flex items-center gap-6 pt-4">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
+                {[
+                  { id: 1, src: "/review/6.jpeg" },
+                  { id: 2, src: "/review/7.jpeg" },
+                  { id: 3, src: "/review/4.png" },
+                  { id: 4, src: "/review/5.jpeg" }
+                ].map((avatar) => (
                   <div
-                    key={i}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4C8E8] to-[#9B7BB5] border-2 border-white flex items-center justify-center text-white text-xs font-medium"
+                    key={avatar.id}
+                    className="w-10 h-10 rounded-full border-2 border-white overflow-hidden shadow-sm shadow-[#9B7BB5]/20"
                   >
-                    {String.fromCharCode(64 + i)}
+                    <img 
+                      src={avatar.src} 
+                      alt="Customer" 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 ))}
               </div>
@@ -272,7 +280,7 @@ const HeroSection = ({
                   ))}
                 </div>
                 <p className="text-sm text-gray-500">
-                  4.9/5 from 2,000+ reviews
+                  4.9/5 from 2,348+ real reviews
                 </p>
               </div>
             </div>
@@ -325,42 +333,42 @@ const RitualSection = () => {
     {
       num: 1,
       name: "Cleanser",
-      icon: Droplets,
+      icon: "/icons/face-cleanser.png",
       desc: "Purify without stripping",
       time: "AM/PM",
     },
     {
       num: 2,
       name: "Toner",
-      icon: Droplets,
+      icon: "/icons/toner.png",
       desc: "Balance & prepare skin",
       time: "AM/PM",
     },
     {
       num: 3,
       name: "Essence",
-      icon: Sparkles,
+      icon: "/icons/essence.png",
       desc: "Hydrate and revitalize",
       time: "AM/PM",
     },
     {
       num: 4,
       name: "Serum",
-      icon: Sparkles,
+      icon: "/icons/serum.png",
       desc: "Deliver potent actives",
       time: "AM/PM",
     },
     {
       num: 5,
       name: "Eye Care",
-      icon: Heart,
+      icon: "/icons/eye-dropper.png",
       desc: "Target delicate areas",
       time: "AM/PM",
     },
     {
       num: 6,
       name: "Moisturizer",
-      icon: Shield,
+      icon: "/icons/skincare.png",
       desc: "Lock in hydration",
       time: "AM/PM",
     },
@@ -394,8 +402,12 @@ const RitualSection = () => {
               <div className="absolute -top-3 -right-3 w-8 h-8 bg-[#9B7BB5] text-white rounded-full flex items-center justify-center text-sm font-medium">
                 {step.num}
               </div>
-              <div className="w-12 h-12 rounded-xl bg-[#D4C8E8]/30 flex items-center justify-center mb-4 group-hover:bg-[#9B7BB5]/20 transition-colors">
-                <step.icon className="w-6 h-6 text-[#9B7BB5]" />
+              <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-[#D4C8E8]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <img 
+                  src={step.icon} 
+                  alt={step.name} 
+                  className="w-10 h-10 object-contain p-1" 
+                />
               </div>
               <h3 className="font-medium text-gray-900 mb-2">{step.name}</h3>
               <p className="text-sm text-gray-500 mb-3">{step.desc}</p>
@@ -518,7 +530,9 @@ const ResultsSection = () => {
             </p>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-[#FAF9F7] rounded-full flex items-center justify-center font-display text-xl text-[#9B7BB5]">A</div>
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
+                <img src="/review/2.jpeg" alt="Emily R." className="w-full h-full object-cover" />
+              </div>
               <div>
                 <p className="font-medium text-gray-900">Emily R.</p>
                 <div className="flex items-center gap-1">
@@ -533,7 +547,9 @@ const ResultsSection = () => {
             </p>
             
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 bg-[#FAF9F7] rounded-full flex items-center justify-center font-display text-xl text-[#9B7BB5]">S</div>
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
+                <img src="/review/3.png" alt="Sarah K." className="w-full h-full object-cover" />
+              </div>
               <div>
                 <p className="font-medium text-gray-900">Sarah K.</p>
                 <div className="flex items-center gap-1">
@@ -552,7 +568,7 @@ const ResultsSection = () => {
               
               <div className="relative flex items-center gap-3">
                 <Star className="w-5 h-5 fill-white/80" />
-                <span>Read 2,000+ Reviews</span>
+                <span>Read 2,348+ Real Reviews</span>
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

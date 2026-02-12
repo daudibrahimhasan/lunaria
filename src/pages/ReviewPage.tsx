@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Star, Check, ArrowLeft, Camera, ThumbsUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SEO } from "../components/SEO";
@@ -84,6 +85,14 @@ const reviews = [
 ];
 
 export const ReviewPage = () => {
+  const [reviewList, setReviewList] = useState(reviews);
+
+  const handleHelpful = (id: number) => {
+    setReviewList(prev => prev.map(review => 
+      review.id === id ? { ...review, helpful: review.helpful + 1 } : review
+    ));
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF9F7]">
       <SEO 
@@ -147,7 +156,7 @@ export const ReviewPage = () => {
 
         {/* Reviews List */}
         <div className="space-y-8">
-          {reviews.map((review) => (
+          {reviewList.map((review) => (
             <div key={review.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3">
@@ -192,8 +201,11 @@ export const ReviewPage = () => {
               )}
 
               <div className="flex items-center gap-4 pt-4 border-t border-gray-50">
-                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#9B7BB5] transition-colors">
-                  <ThumbsUp className="w-4 h-4" />
+                <button 
+                  onClick={() => handleHelpful(review.id)}
+                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#9B7BB5] transition-colors group/helpful"
+                >
+                  <ThumbsUp className="w-4 h-4 group-active/helpful:scale-125 transition-transform" />
                   <span>Helpful ({review.helpful})</span>
                 </button>
               </div>
