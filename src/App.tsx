@@ -14,8 +14,6 @@ import {
   Sun,
   Moon,
   ChevronDown,
-  MessageCircle,
-  Phone,
 } from "lucide-react";
 import { BangladeshPricingSection } from "./components/BangladeshPricingSection";
 import { SEO } from "./components/SEO";

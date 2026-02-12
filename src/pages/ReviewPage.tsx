@@ -58,6 +58,28 @@ const reviews = [
     content: "This is cheaper than buying serum, moisturizer, and toner separately. Plus the quality is top notch Korean standard.",
     image: "/review/6.jpeg",
     helpful: 42
+  },
+  {
+    id: 6,
+    name: "Maya S.",
+    verified: true,
+    rating: 5,
+    date: "1 month ago",
+    title: "Yoga Bag Essential",
+    content: "I love how I can just toss these in my yoga bag and have my full routine ready after a session. No bulky bottles and my skin feels so fresh.",
+    image: "/review/7.jpeg",
+    helpful: 28
+  },
+  {
+    id: 7,
+    name: "Chloe D.",
+    verified: true,
+    rating: 5,
+    date: "2 months ago",
+    title: "In-Flight Facial",
+    content: "The airplane air used to kill my skin, but these capsules are a lifesaver. I do my routine mid-flight and land looking like I actually slept.",
+    image: "/review/8.png",
+    helpful: 61
   }
 ];
 
@@ -77,28 +99,34 @@ export const ReviewPage = () => {
             <span className="font-medium">Back to Home</span>
           </Link>
           <span className="font-display text-xl text-[#9B7BB5]">
-            <span className="font-tan-grandeur mr-1">Lunaria</span> Reviews
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <span className="font-tan-grandeur mr-1">Lunaria</span>
+            </Link>
+            Reviews
           </span>
           <div className="w-20" /> {/* Spacer for centering */}
         </div>
       </div>
 
       {/* Hero Video Banner */}
-      <div className="relative w-full overflow-hidden" style={{ maxHeight: '420px' }}>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          style={{ maxHeight: '420px' }}
-        >
-          <source src="/review/1.mp4" type="video/mp4" />
-        </video>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F7] via-transparent to-black/20" />
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <p className="text-white text-lg font-medium tracking-wide drop-shadow-lg">Real People. Real Results.</p>
+      <div className="relative w-full bg-black overflow-hidden">
+        <div className="aspect-video md:aspect-[21/9] w-full relative">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-80"
+          >
+            <source src="/review/1.mp4" type="video/mp4" />
+          </video>
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F7] via-transparent to-black/30" />
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 px-4 text-center">
+            <p className="text-white text-3xl md:text-5xl font-display tracking-tight drop-shadow-2xl animate-fade-in-up">
+              Glow so <span className="italic text-[#D4C8E8]">fly</span>, <br className="md:hidden" /> even the moon gets <span className="italic text-[#D4C8E8]">shy</span>.
+            </p>
+          </div>
         </div>
       </div>
 
