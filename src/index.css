@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Tan Grandeur';
+  src: url('../Font/TANGRANDEUR.ttf') format('truetype'),
+       url('../Font/TANGRANDEUR.otf') format('opentype');
+  font-display: swap;
+}
+
+:root {
+  --lunaria-purple: #9B7BB5;
+  --lunaria-lavender: #D4C8E8;
+  --lunaria-white: #FFFFFF;
+  --lunaria-green: #5A8A6E;
+  --lunaria-light-green: #E8F5E9;
+  --lunaria-cream: #FAF9F7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--lunaria-cream);
+  color: #2D2D2D;
+}
+
+.font-display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-tan-grandeur {
+  font-family: 'Tan Grandeur', 'Cormorant Garamond', serif;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--lunaria-lavender);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lunaria-purple);
+  border-radius: 4px;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Gradient backgrounds */
+.bg-lunaria-gradient {
+  background: linear-gradient(135deg, var(--lunaria-lavender) 0%, var(--lunaria-white) 50%, var(--lunaria-light-green) 100%);
+}
+
+.bg-lunaria-hero {
+  background: linear-gradient(180deg, var(--lunaria-lavender) 0%, var(--lunaria-white) 40%, var(--lunaria-cream) 100%);
+}
+
+/* Glass effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155, 123, 181, 0.2);
+}
+
+/* Seed pod decoration */
+.seed-pod {
+  position: relative;
+}
+
+.seed-pod::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(ellipse at center, rgba(155, 123, 181, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -10px;
+  right: -10px;
+}
