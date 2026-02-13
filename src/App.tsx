@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Leaf,
-  Droplets,
   Sparkles,
   Shield,
   Heart,
@@ -19,6 +18,11 @@ import { BangladeshPricingSection } from "./components/BangladeshPricingSection"
 import { SEO } from "./components/SEO";
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from "react-router-dom";
 import { ReviewPage } from "./pages/ReviewPage";
+import { Checkout } from "./pages/Checkout";
+import { Success } from "./pages/Success";
+import { AdminLogin } from "./pages/AdminLogin";
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { AdminOrderDetail } from "./pages/AdminOrderDetail";
 import {
   detectUserLocation,
   formatPrice,
@@ -38,6 +42,19 @@ const ScrollToTop = () => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
+
+    // Disable right-click on images
+    const handleContextMenu = (e: MouseEvent) => {
+      if (e.target instanceof HTMLImageElement) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
   }, []);
 
   return null;
@@ -111,6 +128,11 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    if (id === "reviews") {
+        navigate("/reviews");
+        return;
+    }
+
     if (location.pathname !== "/") {
       navigate("/");
       setTimeout(() => {
@@ -137,7 +159,7 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            {["Ritual", "Ingredients", "How to Use", "Sustainability"].map(
+            {["Ritual", "Ingredients", "How to Use", "Reviews"].map(
               (item) => {
                 const id = item.toLowerCase().replace(/\s+/g, "-");
                 return (
@@ -155,7 +177,10 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="relative p-2 hover:bg-[#D4C8E8]/20 rounded-full transition-colors">
+            <button 
+              onClick={() => navigate('/checkout')}
+              className="relative p-2 hover:bg-[#D4C8E8]/20 rounded-full transition-colors cursor-pointer"
+            >
               <ShoppingBag className="w-5 h-5 text-gray-700" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#9B7BB5] text-white text-xs rounded-full flex items-center justify-center">
@@ -181,7 +206,7 @@ const Navigation = ({ cartCount }: { cartCount: number }) => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <div className="px-4 py-4 space-y-3">
-            {["Ritual", "Ingredients", "How to Use", "Sustainability"].map(
+            {["Ritual", "Ingredients", "How to Use", "Reviews"].map(
               (item) => {
                  const id = item.toLowerCase().replace(/\s+/g, "-");
                  return (
@@ -216,36 +241,36 @@ const HeroSection = ({
   return (
     <section className="relative min-h-screen bg-lunaria-hero pt-20 overflow-hidden">
       {/* Background Decorations */}
-      <div className="absolute top-40 left-10 w-64 h-64 bg-[#D4C8E8]/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#5A8A6E]/10 rounded-full blur-3xl" />
+      <div className="absolute top-40 left-10 w-64 h-64 bg-[#D4C8E8]/30 rounded-full blur-3xl opacity-60 md:opacity-100" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#5A8A6E]/10 rounded-full blur-3xl opacity-60 md:opacity-100" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in-up">
+          <div className="space-y-6 md:space-y-8 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 rounded-full border border-[#9B7BB5]/20">
               <span className="text-sm font-medium text-[#9B7BB5]">
                 Premium care. Light as air.
               </span>
             </div>
 
-            <h1 className="font-display text-5xl lg:text-7xl font-light text-gray-900 leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-7xl font-light text-gray-900 leading-tight">
               Pack Light. <br />
               <span className="italic text-[#9B7BB5]">Glow Bright.</span>
             </h1>
 
-            <p className="text-lg text-gray-600 max-w-md leading-relaxed">
+            <p className="text-base md:text-lg text-gray-600 max-w-md leading-relaxed">
               The complete 12-step skincare routine—cleanser, toner, essence, serum, eye care, and moisturizer—in one featherlight capsule pack.
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={onAddToCart}
-                className="px-8 py-4 bg-[#9B7BB5] text-white rounded-full font-medium hover:bg-[#8A6AA4] transition-all hover:shadow-lg hover:shadow-[#9B7BB5]/30 flex items-center gap-2"
+                className="px-8 py-4 bg-[#9B7BB5] text-white rounded-full font-medium hover:bg-[#8A6AA4] transition-all hover:shadow-lg hover:shadow-[#9B7BB5]/30 flex items-center justify-center gap-2 group w-full sm:w-auto"
               >
-                <ShoppingBag className="w-5 h-5" />
-                Add to Ritual — {formatPrice(price, currency)}
+                <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                Start My Order — {formatPrice(price, currency)}
               </button>
-              <button className="px-8 py-4 border-2 border-[#9B7BB5] text-[#9B7BB5] rounded-full font-medium hover:bg-[#9B7BB5]/5 transition-all">
+              <button className="px-8 py-4 border-2 border-[#9B7BB5] text-[#9B7BB5] rounded-full font-medium hover:bg-[#9B7BB5]/5 transition-all w-full sm:w-auto">
                 Discover More
               </button>
             </div>
@@ -286,10 +311,10 @@ const HeroSection = ({
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative mt-8 lg:mt-0">
             <div className="relative z-10 animate-float">
               {/* Product Image Container */}
-              <div className="aspect-square rounded-[3rem] bg-white shadow-2xl shadow-[#9B7BB5]/20 overflow-hidden border border-[#D4C8E8]/30 flex items-center justify-center">
+              <div className="aspect-square rounded-4xl md:rounded-[3rem] bg-white shadow-2xl shadow-[#9B7BB5]/20 overflow-hidden border border-[#D4C8E8]/30 flex items-center justify-center">
                 <img
                   src="/1770850570579-019c4eea-8314-75a9-917f-82dcdf898b1d.png"
                   alt="Lunaria 7-in-1 Capsule Routine"
@@ -300,18 +325,18 @@ const HeroSection = ({
               </div>
 
               {/* Floating badges */}
-              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-lg p-4 border border-[#D4C8E8]/30">
-                <Leaf className="w-6 h-6 text-[#5A8A6E]" />
-                <p className="text-xs font-medium text-gray-600 mt-1">
+              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-[#D4C8E8]/30 scale-90 md:scale-100">
+                <Leaf className="w-5 h-5 md:w-6 md:h-6 text-[#5A8A6E]" />
+                <p className="text-[10px] md:text-xs font-medium text-gray-600 mt-1">
                   100%
                   <br />
                   Natural
                 </p>
               </div>
 
-              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lg p-4 border border-[#D4C8E8]/30">
-                <Shield className="w-6 h-6 text-[#9B7BB5]" />
-                <p className="text-xs font-medium text-gray-600 mt-1">
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-[#D4C8E8]/30 scale-90 md:scale-100">
+                <Shield className="w-5 h-5 md:w-6 md:h-6 text-[#9B7BB5]" />
+                <p className="text-[10px] md:text-xs font-medium text-gray-600 mt-1">
                   Cruelty
                   <br />
                   Free
@@ -319,7 +344,7 @@ const HeroSection = ({
               </div>
             </div>
 
-            <SeedPodDecoration className="absolute -bottom-10 -right-10 w-48" />
+            <SeedPodDecoration className="absolute -bottom-10 -right-10 w-32 md:w-48" />
           </div>
         </div>
       </div>
@@ -375,43 +400,43 @@ const RitualSection = () => {
   ];
 
   return (
-    <section id="ritual" className="py-24 bg-white relative overflow-hidden">
+    <section id="ritual" className="py-16 md:py-24 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#D4C8E8]/20 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">
             Why Lunaria?
           </span>
-          <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mt-4">
             Your Complete <span className="italic text-[#9B7BB5]">6-Step</span>{" "}
             AM/PM Ritual
           </h2>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto px-4">
             Each day involves 12 capsules total — 6 in the morning and 6 at night
             for total skin transformation.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {steps.map((step) => (
             <div
               key={step.num}
-              className="group relative bg-gradient-to-b from-[#FAF9F7] to-white rounded-2xl p-6 border border-[#D4C8E8]/30 hover:border-[#9B7BB5]/50 transition-all hover:shadow-lg hover:shadow-[#9B7BB5]/10"
+              className="group relative bg-gradient-to-b from-[#FAF9F7] to-white rounded-2xl p-4 md:p-6 border border-[#D4C8E8]/30 hover:border-[#9B7BB5]/50 transition-all hover:shadow-lg hover:shadow-[#9B7BB5]/10"
             >
-              <div className="absolute -top-3 -right-3 w-8 h-8 bg-[#9B7BB5] text-white rounded-full flex items-center justify-center text-sm font-medium">
+              <div className="absolute -top-3 -right-3 w-6 h-6 md:w-8 md:h-8 bg-[#9B7BB5] text-white rounded-full flex items-center justify-center text-xs md:text-sm font-medium">
                 {step.num}
               </div>
-              <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-[#D4C8E8]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white shadow-sm border border-[#D4C8E8]/20 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
                 <img 
                   src={step.icon} 
                   alt={step.name} 
-                  className="w-10 h-10 object-contain p-1" 
+                  className="w-8 h-8 md:w-10 md:h-10 object-contain p-1" 
                 />
               </div>
-              <h3 className="font-medium text-gray-900 mb-2">{step.name}</h3>
-              <p className="text-sm text-gray-500 mb-3">{step.desc}</p>
-              <div className="flex items-center gap-1 text-xs text-[#5A8A6E]">
+              <h3 className="font-medium text-gray-900 mb-1 md:mb-2 text-sm md:text-base">{step.name}</h3>
+              <p className="text-xs md:text-sm text-gray-500 mb-2 md:mb-3">{step.desc}</p>
+              <div className="flex items-center gap-1 text-[10px] md:text-xs text-[#5A8A6E]">
                 {step.time === "AM" ? (
                   <Sun className="w-3 h-3" />
                 ) : step.time === "PM" ? (
@@ -429,10 +454,10 @@ const RitualSection = () => {
         </div>
 
         {/* Capsule Visualization */}
-        <div className="mt-16 bg-gradient-to-r from-[#D4C8E8]/20 via-white to-[#5A8A6E]/10 rounded-3xl p-8 lg:p-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="mt-16 bg-linear-to-r from-[#D4C8E8]/20 via-white to-[#5A8A6E]/10 rounded-3xl p-6 md:p-8 lg:p-12">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h3 className="font-display text-3xl text-gray-900 mb-4">
+              <h3 className="font-display text-2xl md:text-3xl text-gray-900 mb-4">
                 Big glow energy. <span className="italic text-[#9B7BB5]">Tiny to carry.</span>
               </h3>
               <p className="text-gray-600 mb-6">
@@ -480,19 +505,17 @@ const RitualSection = () => {
 };
 
 // Results Section
-const ResultsSection = () => {
+const ResultsSection = ({ onShopNow }: { onShopNow: () => void }) => {
   return (
-    <section id="results" className="py-24 bg-white relative overflow-hidden">
+    <section id="results" className="py-16 md:py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
           <div className="relative order-2 lg:order-1">
             {/* Abstract Background */}
             <div className="absolute inset-0 bg-[#D4C8E8]/20 blur-3xl rounded-full" />
             
-            {/* Before & After Card - Using CSS to crop/focus on the face part of the image if it's a composite, 
-                or just showing the image elegantly if it's already separated. 
-                Assuming the upload image has faces. */}
-            <div className="relative z-10 bg-white p-3 rounded-3xl shadow-xl shadow-[#9B7BB5]/10 border border-[#D4C8E8]/30">
+            {/* Before & After Card */}
+            <div className="relative z-10 bg-white p-2 md:p-3 rounded-3xl shadow-xl shadow-[#9B7BB5]/10 border border-[#D4C8E8]/30">
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
                 <img 
                   src="/Gemini_Generated_Image_bvnipybvnipybvni.png" 
@@ -501,20 +524,20 @@ const ResultsSection = () => {
                 />
               </div>
               
-              <div className="flex justify-between items-center mt-4 px-4 py-3 bg-[#FAF9F7] rounded-2xl">
+              <div className="flex justify-between items-center mt-3 md:mt-4 px-3 md:px-4 py-3 bg-[#FAF9F7] rounded-2xl">
                 <div className="text-center">
-                  <p className="text-xl font-display text-gray-900 leading-none">94%</p>
-                  <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Brighter</p>
+                  <p className="text-lg md:text-xl font-display text-gray-900 leading-none">94%</p>
+                  <p className="text-[9px] md:text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Brighter</p>
                 </div>
                 <div className="w-px h-6 bg-[#D4C8E8]/30" />
                 <div className="text-center">
-                  <p className="text-xl font-display text-gray-900 leading-none">89%</p>
-                  <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Fine Lines</p>
+                  <p className="text-lg md:text-xl font-display text-gray-900 leading-none">89%</p>
+                  <p className="text-[9px] md:text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Fine Lines</p>
                 </div>
                 <div className="w-px h-6 bg-[#D4C8E8]/30" />
                 <div className="text-center">
-                  <p className="text-xl font-display text-gray-900 leading-none">100%</p>
-                  <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Gentle</p>
+                  <p className="text-lg md:text-xl font-display text-gray-900 leading-none">100%</p>
+                  <p className="text-[9px] md:text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Gentle</p>
                 </div>
               </div>
             </div>
@@ -522,15 +545,15 @@ const ResultsSection = () => {
 
           <div className="order-1 lg:order-2">
             <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">Real Results</span>
-            <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4 mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mt-4 mb-6">
               Transformation You Can <span className="italic text-[#9B7BB5]">See</span>
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 leading-relaxed">
               "I never believed a capsule could change my skin so drastically. The uneven tone is gone, and my face feels plumper and more alive than it has in years."
             </p>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
                 <img src="/review/2.jpeg" alt="Emily R." className="w-full h-full object-cover" />
               </div>
               <div>
@@ -542,12 +565,12 @@ const ResultsSection = () => {
               </div>
             </div>
 
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed italic">
+            <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 leading-relaxed italic">
               "Best travel companion ever. I took the 5-pack to Miami and didn't have to worry about my skincare routine at all. My skin stayed hydrated and glowing!"
             </p>
             
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#D4C8E8]/30">
                 <img src="/review/3.png" alt="Sarah K." className="w-full h-full object-cover" />
               </div>
               <div>
@@ -559,21 +582,31 @@ const ResultsSection = () => {
               </div>
             </div>
 
-            <Link 
-              to="/reviews" 
-              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#9B7BB5] to-[#B794D0] text-white rounded-full font-medium text-base shadow-lg shadow-[#9B7BB5]/30 hover:shadow-xl hover:shadow-[#9B7BB5]/40 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
-            >
-              {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              
-              <div className="relative flex items-center gap-3">
-                <Star className="w-5 h-5 fill-white/80" />
-                <span>Read 2,348+ Real Reviews</span>
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </div>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link 
+                to="/reviews" 
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-linear-to-r from-[#9B7BB5] to-[#B794D0] text-white rounded-full font-medium text-base shadow-lg shadow-[#9B7BB5]/30 hover:shadow-xl hover:shadow-[#9B7BB5]/40 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden w-full sm:w-auto"
+              >
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                
+                <div className="relative flex items-center gap-3">
+                  <Star className="w-5 h-5 fill-white/80" />
+                  <span>Read 2,348+ Real Reviews</span>
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              </Link>
+
+              <button
+                onClick={onShopNow}
+                className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-[#9B7BB5] text-[#9B7BB5] rounded-full font-medium text-base hover:bg-[#FAF9F7] hover:border-[#8A6AA4] hover:text-[#8A6AA4] hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                <span>Shop Now</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -642,25 +675,25 @@ const IngredientsSection = () => {
   };
 
   return (
-    <section id="ingredients" className="py-24 lg:py-32 bg-[#FAF9F7] relative overflow-hidden">
+    <section id="ingredients" className="py-16 md:py-24 lg:py-32 bg-[#FAF9F7] relative overflow-hidden">
       <SeedPodDecoration className="absolute top-20 right-0 w-80 rotate-180 opacity-50" />
       
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section - Botanicals */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 mb-24 items-center">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-24 mb-16 md:mb-24 items-center">
             <div className="lg:col-span-5 order-2 lg:order-1">
-                <span className="text-[#5A8A6E] font-semibold text-xs tracking-[0.2em] uppercase pl-1 block mb-6">
+                <span className="text-[#5A8A6E] font-semibold text-xs tracking-[0.2em] uppercase pl-1 block mb-4 md:mb-6">
                     Pure Botanicals
                 </span>
-                <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mb-8 leading-tight">
+                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mb-6 md:mb-8 leading-tight">
                     Nature's Most <span className="font-normal italic text-[#9B7BB5]">Powerful</span> Actives
                 </h2>
-                <p className="text-gray-500 text-base leading-relaxed mb-10 max-w-lg">
+                <p className="text-gray-500 text-sm md:text-base leading-relaxed mb-8 md:mb-10 max-w-lg">
                     We've curated the finest ingredients from around the world. Each capsule is a potent blend of science and nature, designed to deliver visible results without irritation.
                 </p>
                 
-                {/* Botanical Tags - Lighter/Smaller */}
-                <div className="flex flex-wrap gap-2.5 mb-16">
+                {/* Botanical Tags */}
+                <div className="flex flex-wrap gap-2.5 mb-10 md:mb-16">
                     {botanicals.map((botanical) => (
                         <span
                         key={botanical}
@@ -671,7 +704,7 @@ const IngredientsSection = () => {
                     ))}
                 </div>
 
-                {/* Active Ingredients - Pill Style with Click to Expand */}
+                {/* Active Ingredients - Pill Style */}
                 <div className="space-y-4">
                   <div className="flex flex-wrap gap-3">
                     {ingredients.map((ing) => {
@@ -682,10 +715,10 @@ const IngredientsSection = () => {
                         <div key={ing.name} className="contents">
                           <button
                             onClick={() => setExpandedIngredient(isExpanded ? null : ing.name)}
-                            className={`px-5 py-2.5 ${colors.bg} ${colors.border} border rounded-full text-sm ${colors.text} ${colors.hover} transition-all shadow-sm hover:shadow-md font-medium flex items-center gap-2`}
+                            className={`px-4 md:px-5 py-2 md:py-2.5 ${colors.bg} ${colors.border} border rounded-full text-xs md:text-sm ${colors.text} ${colors.hover} transition-all shadow-sm hover:shadow-md font-medium flex items-center gap-2`}
                           >
                             {ing.name}
-                            <ChevronDown className={`w-3.5 h-3.5 opacity-60 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 opacity-60 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
                           </button>
                         </div>
                       );
@@ -724,7 +757,7 @@ const IngredientsSection = () => {
                   {/* Background Glow */}
                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-[#5A8A6E]/10 to-transparent rounded-full blur-3xl pointer-events-none" />
                  
-                  <div className="relative aspect-square rounded-[2.5rem] border border-white/50 bg-white shadow-2xl shadow-[#5A8A6E]/5 overflow-hidden flex items-center justify-center group">
+                  <div className="relative aspect-square rounded-4xl md:rounded-[2.5rem] border border-white/50 bg-white shadow-2xl shadow-[#5A8A6E]/5 overflow-hidden flex items-center justify-center group">
                     {/* Image Vignette Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10 pointer-events-none" />
                     
@@ -748,11 +781,11 @@ const IngredientsSection = () => {
         </div>
 
         {/* Feature Showcase Section */}
-        <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-lg border border-[#D4C8E8]/20">
-          <div className="grid lg:grid-cols-2 gap-12">
+        <div className="bg-white rounded-3xl p-6 md:p-8 lg:p-12 shadow-lg border border-[#D4C8E8]/20">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
             {/* Left Side - Product Image */}
             <div className="flex items-center justify-center">
-              <div className="relative max-w-md">
+              <div className="relative max-w-md w-full">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#D4C8E8]/30 to-[#9B7BB5]/30 rounded-3xl blur-2xl" />
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#D4C8E8]/30">
                   <img 
@@ -767,13 +800,13 @@ const IngredientsSection = () => {
             {/* Right Side - Brand Story */}
             <div className="flex flex-col justify-center">
               <div className="border-l-4 border-[#9B7BB5] pl-6">
-                <h3 className="font-display text-3xl text-gray-900 mb-4">
+                <h3 className="font-display text-2xl md:text-3xl text-gray-900 mb-4">
                   Luxury Without the <span className="italic text-[#9B7BB5]">Baggage</span>
                 </h3>
-                <p className="text-gray-600 leading-relaxed mb-4">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
                   Why compromise on your skincare routine when you travel? Lunaria replaces your heavy, fragile luxury bottles with a smart, space-saving solution that fits perfectly in any bag.
                 </p>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                   Experience the same potent, high-performance actives found in top-tier brands—Squalene, Peptides, and Hyaluronic Acid—compacted into spill-proof, biodegradable capsules. Perfect for your gym bag, carry-on, or clutch.
                 </p>
               </div>
@@ -788,21 +821,21 @@ const IngredientsSection = () => {
 // How It Works Section
 const HowItWorksSection = () => {
   return (
-    <section id="how-to-use" className="py-24 bg-white">
+    <section id="how-to-use" className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <span className="text-[#9B7BB5] font-medium text-sm tracking-widest uppercase">
             How to Use
           </span>
-          <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mt-4">
             Get the glow. <span className="italic text-[#9B7BB5]">Good to go.</span>
           </h2>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base md:text-lg px-4">
             ☀️ AM: Snap, apply, and protect. 🌙 PM: Cleanse, hydrate, and restore.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
               step: "01",
@@ -820,8 +853,8 @@ const HowItWorksSection = () => {
               desc: "Use entire capsule for face and neck. Proceed to next step immediately for layered benefits.",
             },
           ].map((item) => (
-            <div key={item.step} className="text-center">
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#D4C8E8] to-[#9B7BB5] flex items-center justify-center text-white text-2xl font-display mb-6">
+            <div key={item.step} className="text-center px-4">
+              <div className="w-16 h-16 md:w-20 md:h-20 mx-auto rounded-full bg-gradient-to-br from-[#D4C8E8] to-[#9B7BB5] flex items-center justify-center text-white text-xl md:text-2xl font-display mb-6">
                 {item.step}
               </div>
               <h3 className="text-xl font-medium text-gray-900 mb-3">
@@ -834,10 +867,10 @@ const HowItWorksSection = () => {
 
         {/* Usage Tips */}
         {/* Skincare Liberated Section */}
-        <div className="mt-20">
+        <div className="mt-16 md:mt-20">
           <div className="bg-[#FAF9F7] rounded-3xl overflow-hidden border border-[#D4C8E8]/20">
             <div className="grid lg:grid-cols-2">
-              <div className="relative overflow-hidden group">
+              <div className="relative overflow-hidden group h-64 lg:h-auto">
                 <img 
                   src="/Hcad648ffb039489c8b4f25d156ad062d5.jpg" 
                   alt="Skincare Liberated - Texture" 
@@ -884,19 +917,19 @@ const SustainabilitySection = () => {
   return (
     <section
       id="sustainability"
-      className="py-24 bg-gradient-to-b from-[#5A8A6E]/10 to-white"
+      className="py-16 md:py-24 bg-gradient-to-b from-[#5A8A6E]/10 to-white"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <span className="text-[#5A8A6E] font-medium text-sm tracking-widest uppercase">
             Our Promise
           </span>
-          <h2 className="font-display text-4xl lg:text-5xl font-light text-gray-900 mt-4">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mt-4">
             Transparent <span className="italic text-[#5A8A6E]">Beauty</span>
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {[
             {
               icon: Leaf,
@@ -916,7 +949,7 @@ const SustainabilitySection = () => {
           ].map((item) => (
             <div
               key={item.title}
-              className="text-center p-8 bg-white rounded-2xl shadow-sm"
+              className="text-center p-8 bg-white rounded-2xl shadow-sm mx-4 md:mx-0"
             >
               <div className="w-16 h-16 mx-auto rounded-full bg-[#5A8A6E]/10 flex items-center justify-center mb-4">
                 <item.icon className="w-8 h-8 text-[#5A8A6E]" />
@@ -928,7 +961,7 @@ const SustainabilitySection = () => {
         </div>
 
         {/* Certifications */}
-        <div className="flex flex-wrap justify-center gap-8 items-center py-8 border-t border-b border-[#D4C8E8]/30">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 items-center py-8 border-t border-b border-[#D4C8E8]/30">
           {["Certified", "Eco-Approved", "Cruelty-Free", "Vegan Friendly"].map(
             (cert) => (
               <div key={cert} className="flex items-center gap-2 text-gray-600">
@@ -943,12 +976,13 @@ const SustainabilitySection = () => {
   );
 };
 
+
 // Footer
 const Footer = () => {
   return (
-    <footer className="bg-[#2D2D2D] text-white py-16">
+    <footer className="bg-[#2D2D2D] text-white pt-12 md:pt-16 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
           <div>
             <LunariaLogo className="mb-6" />
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -1028,7 +1062,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 text-center md:text-left">
             © 2026 Lunaria. All rights reserved. Powered by{" "}
             <span className="text-[#9B7BB5] font-medium">Nexasity AI</span>
           </p>
@@ -1046,21 +1080,30 @@ const Footer = () => {
   );
 };
 
-const LandingPage = ({ cartCount, handleAddToCart, heroPrice, currency }: any) => (
-  <>
-    <HeroSection 
-      onAddToCart={handleAddToCart} 
-      price={heroPrice} 
-      currency={currency} 
-    />
-    <RitualSection />
-    <ResultsSection />
-    <IngredientsSection />
-    <HowItWorksSection />
-    <SustainabilitySection />
-    <BangladeshPricingSection />
-  </>
-);
+const LandingPage = ({ handleAddToCart, heroPrice, currency }: any) => {
+  const navigate = useNavigate();
+  
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate('/checkout');
+  };
+
+  return (
+    <>
+      <HeroSection 
+        onAddToCart={handleBuyNow} 
+        price={heroPrice} 
+        currency={currency} 
+      />
+      <RitualSection />
+      <ResultsSection onShopNow={handleBuyNow} />
+      <IngredientsSection />
+      <HowItWorksSection />
+      <SustainabilitySection />
+      <BangladeshPricingSection />
+    </>
+  );
+};
 
 // WhatsApp Floating Button
 const WhatsAppButton = () => (
@@ -1082,16 +1125,19 @@ const WhatsAppButton = () => (
   </a>
 );
 
-// Main App Component
-export function App() {
+// Inner App that has access to useLocation (must be inside BrowserRouter)
+function AppContent() {
   const [cartCount, setCartCount] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
   const [isBangladesh, setIsBangladesh] = useState<boolean | null>(null);
+  const location = useLocation();
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     const initLocation = async () => {
-      const location = await detectUserLocation();
-      setIsBangladesh(location.isBangladesh);
+      const loc = await detectUserLocation();
+      setIsBangladesh(loc.isBangladesh);
     };
     initLocation();
   }, []);
@@ -1107,16 +1153,18 @@ export function App() {
   const currency = pricing.currency;
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
-      <WhatsAppButton />
+      {!isAdminRoute && <WhatsAppButton />}
       <div className="min-h-screen bg-[#FAF9F7]">
-        <SEO 
-          title="Lunaria | 12-in-1 Capsule Routine for Radiant Skin"
-          description="Discover the 6-step AM/PM ritual with Lunaria's 12-in-1 capsules. Simplify your skincare with pre-dosed, sustainable beauty for Bangladesh and beyond."
-          image="/Gemini_Generated_Image_clo5tmclo5tmclo5.png"
-        />
-        <Navigation cartCount={cartCount} />
+        {!isAdminRoute && (
+          <SEO 
+            title="Lunaria | 12-in-1 Capsule Routine for Radiant Skin"
+            description="Discover the 6-step AM/PM ritual with Lunaria's 12-in-1 capsules. Simplify your skincare with pre-dosed, sustainable beauty for Bangladesh and beyond."
+            image="/Gemini_Generated_Image_clo5tmclo5tmclo5.png"
+          />
+        )}
+        {!isAdminRoute && <Navigation cartCount={cartCount} />}
 
         {/* Cart Notification */}
         {showNotification && (
@@ -1137,11 +1185,26 @@ export function App() {
               />
             } />
             <Route path="/reviews" element={<ReviewPage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
           </Routes>
         </main>
 
-        <Footer />
+        {!isAdminRoute && <Footer />}
       </div>
+    </>
+  );
+}
+
+// Main App Component
+export function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
+

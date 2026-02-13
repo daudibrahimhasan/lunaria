@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Tan Grandeur';
-  src: url('../Font/TANGRANDEUR.ttf') format('truetype'),
-       url('../Font/TANGRANDEUR.otf') format('opentype');
+  font-family: "Tan Grandeur";
+  src:
+    url("../Font/TANGRANDEUR.ttf") format("truetype"),
+    url("../Font/TANGRANDEUR.otf") format("opentype");
   font-display: swap;
 }
 
 :root {
-  --lunaria-purple: #9B7BB5;
-  --lunaria-lavender: #D4C8E8;
-  --lunaria-white: #FFFFFF;
-  --lunaria-green: #5A8A6E;
-  --lunaria-light-green: #E8F5E9;
-  --lunaria-cream: #FAF9F7;
+  --lunaria-purple: #9b7bb5;
+  --lunaria-lavender: #d4c8e8;
+  --lunaria-white: #ffffff;
+  --lunaria-green: #5a8a6e;
+  --lunaria-light-green: #e8f5e9;
+  --lunaria-cream: #faf9f7;
 }
 
 html {
@@ -21,17 +22,17 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: var(--lunaria-cream);
-  color: #2D2D2D;
+  color: #2d2d2d;
 }
 
 .font-display {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
 }
 
 .font-tan-grandeur {
-  font-family: 'Tan Grandeur', 'Cormorant Garamond', serif;
+  font-family: "Tan Grandeur", "Cormorant Garamond", serif;
   font-weight: 400;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -53,8 +54,13 @@ body {
 
 /* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes fadeInUp {
@@ -69,8 +75,12 @@ body {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .animate-float {
@@ -82,18 +92,33 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
 
 /* Gradient backgrounds */
 .bg-lunaria-gradient {
-  background: linear-gradient(135deg, var(--lunaria-lavender) 0%, var(--lunaria-white) 50%, var(--lunaria-light-green) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--lunaria-lavender) 0%,
+    var(--lunaria-white) 50%,
+    var(--lunaria-light-green) 100%
+  );
 }
 
 .bg-lunaria-hero {
-  background: linear-gradient(180deg, var(--lunaria-lavender) 0%, var(--lunaria-white) 40%, var(--lunaria-cream) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--lunaria-lavender) 0%,
+    var(--lunaria-white) 40%,
+    var(--lunaria-cream) 100%
+  );
 }
 
 /* Glass effect */
@@ -109,12 +134,30 @@ body {
 }
 
 .seed-pod::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 60px;
   height: 60px;
-  background: radial-gradient(ellipse at center, rgba(155, 123, 181, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(155, 123, 181, 0.1) 0%,
+    transparent 70%
+  );
   border-radius: 50%;
   top: -10px;
   right: -10px;
+}
+
+/* Disable image dragging globally */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }

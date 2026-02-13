@@ -81,6 +81,17 @@ const reviews = [
     content: "The airplane air used to kill my skin, but these capsules are a lifesaver. I do my routine mid-flight and land looking like I actually slept.",
     image: "/review/8.png",
     helpful: 61
+  },
+  {
+    id: 8,
+    name: "Zahra H.",
+    verified: true,
+    rating: 5,
+    date: "2 months ago",
+    title: "The ultimate 12-in-1 pack",
+    content: "Finally received my Lunaria pack! The labeling makes it so easy to follow. No more guessing which product comes next. My skin is loving the ritual.",
+    image: "/review/9.jpeg",
+    helpful: 45
   }
 ];
 
